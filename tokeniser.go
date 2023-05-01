@@ -3,7 +3,10 @@ package main
 import (
 	"fmt"
 	"strings"
+	"io/ioutil"
+	"encoding/json"
 	"unicode"
+	"os"
 )
 
 type Token struct {
@@ -12,6 +15,77 @@ type Token struct {
 	Start int
 	End   int
 }
+
+
+type Tokenizer struct {
+	AddedTokens   []AddedToken  `json:"added_tokens"`
+	Normalizer    Normalizer    `json:"normalizer"`
+	PreTokenizer  PreTokenizer  `json:"pre_tokenizer"`
+	PostProcessor PostProcessor `json:"post_processor"`
+	Decoder       Decoder       `json:"decoder"`
+	Model         Model         `json:"model"`
+}
+
+type AddedToken struct {
+	Id         int    `json:"id"`
+	Special    bool   `json:"special"`
+	Content    string `json:"content"`
+	SingleWord bool   `json:"single_word"`
+	Lstrip     bool   `json:"lstrip"`
+	Rstrip     bool   `json:"rstrip"`
+	Normalized bool   `json:"normalized"`
+}
+
+type Normalizer struct {
+	Type string `json:"type"`
+}
+
+type PreTokenizer struct {
+	Type           string `json:"type"`
+	AddPrefixSpace bool   `json:"add_prefix_space"`
+	TrimOffsets    bool   `json:"trim_offsets"`
+}
+
+type PostProcessor struct {
+	Type           string `json:"type"`
+	AddPrefixSpace bool   `json:"add_prefix_space"`
+	TrimOffsets    bool   `json:"trim_offsets"`
+}
+
+type Decoder struct {
+	Type           string `json:"type"`
+	AddPrefixSpace bool   `json:"add_prefix_space"`
+	TrimOffsets    bool   `json:"trim_offsets"`
+}
+
+type Model struct {
+	Type                    string         `json:"type"`
+	Dropout                 float32        `json:"dropout"`
+	UnkToken                string         `json:"unk_token"`
+	ContinuingSubwordPrefix string         `json:"continuing_subword_prefix"`
+	EndOfWordSuffix         string         `json:"end_of_word_suffix"`
+	FuseUnk                 bool           `json:"fuse_unk"`
+	Vocab                   map[string]int `json:"vocab"`
+	Merges                  []string       `json:"merges"`
+}
+
+func LoadTokeniser(file string) (Tokenizer, error) {
+	var tokeniser Tokenizer
+	jsonFile, err := os.Open(file)
+	if err != nil {
+		return tokeniser, err
+	}
+	defer jsonFile.Close()
+
+	byteValue, _ := ioutil.ReadAll(jsonFile)
+	json.Unmarshal(byteValue, &tokeniser)
+	return tokeniser, nil
+}
+
+func (t Tokenizer) Encode(text string) ([]Token, error) {
+	return Tokenize(text, t)
+}
+
 
 func Tokenize(input string, pipelineConfig Tokenizer) ([]Token, error) {
 
