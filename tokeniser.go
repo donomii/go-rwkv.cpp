@@ -101,7 +101,7 @@ func Tokenize(input string, pipelineConfig Tokenizer) ([]Token, error) {
 		return nil, fmt.Errorf("Invalid normalizer type.")
 	}
 
-	fmt.Println("Normalized input:", input)
+	//fmt.Println("Normalized input:", input)
 
 	// Pre-tokenization
 	switch pipelineConfig.PreTokenizer.Type {
@@ -111,7 +111,7 @@ func Tokenize(input string, pipelineConfig Tokenizer) ([]Token, error) {
 		return nil, fmt.Errorf("Invalid pre-tokenizer type.")
 	}
 
-	fmt.Println("Pre-tokenized input:", input)
+	//fmt.Println("Pre-tokenized input:", input)
 
 	// Model
 	var toks []string
@@ -122,7 +122,7 @@ func Tokenize(input string, pipelineConfig Tokenizer) ([]Token, error) {
 		return nil, fmt.Errorf("Invalid model type.")
 	}
 
-	fmt.Println("Tokenized input:", toks)
+	//fmt.Println("Tokenized input:", toks)
 
 	// Post-processing
 	var tokens []Token
@@ -133,7 +133,7 @@ func Tokenize(input string, pipelineConfig Tokenizer) ([]Token, error) {
 		return nil, fmt.Errorf("Invalid post-processor type.")
 	}
 
-	fmt.Println("Post-processed input:", tokens)
+	//fmt.Println("Post-processed input:", tokens)
 
 	return tokens, nil
 }
@@ -218,7 +218,7 @@ func ByteLevelDecode(in []string, tk Tokenizer) []Token {
 		val := strings.ReplaceAll(strings.ReplaceAll(tok, "\u0120", " "), "Ċ", "\n")
 		num := tk.Model.Vocab[tok]
 		if num != 0 {
-			fmt.Printf("Token: %s, ID: %d\n", val, num)
+			//fmt.Printf("Token: %s, ID: %d\n", val, num)
 			decodedTokens = append(decodedTokens, Token{ID: num, Value: val, Start: 0, End: 0})
 		}
 	}
