@@ -21,7 +21,7 @@ type ConversationState struct {
 }
 
 func main() {
-	Model := rwkv.LoadFiles("aimodels/RWKV-4-Raven-1B5-v9-Eng99%-Other1%-20230411-ctx4096_quant4.bin", "rwkv.cpp/rwkv/20B_tokenizer.json", 8)
+	Model := rwkv.LoadFiles("aimodels/small.bin", "rwkv.cpp/rwkv/20B_tokenizer.json", 8)
 	preambleTemplate := `The following is a verbose detailed conversation between {{ .User }} and a woman, {{ .Bot }}. {{ .Bot }} is intelligent, friendly and likeable. {{ .Bot }} is likely to agree with {{ .User }}.
 
 {{ .User }}{{ .Separator }} Hello {{ .Bot }}, how are you doing?
