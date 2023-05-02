@@ -1,5 +1,7 @@
 # AI without python (1)
 
+# [![Go Reference](https://pkg.go.dev/badge/github.com/donomii/go-rwkv.cpp.svg)](https://pkg.go.dev/github.com/donomii/go-rwkv.cpp) go-rwkv.cpp
+
 gowrkv.go is a wrapper around [rwkv-cpp](https://github.com/saharNooby/rwkv.cpp), which is an adaption of ggml.cpp.
 
 (1) Python required for training and converting the models into the correct format.
