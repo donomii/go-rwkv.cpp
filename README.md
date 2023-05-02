@@ -1,5 +1,4 @@
-# go-rwkv.cpp
-Run AI in go programs, without any python, at all! (1)
+# AI without python (1)
 
 gowrkv.go is a wrapper around [rwkv-cpp](https://github.com/saharNooby/rwkv.cpp), which is an adaption of ggml.cpp.
 
