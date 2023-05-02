@@ -124,8 +124,11 @@ type RwkvState struct {
 	Tokenizer *Tokenizer
 }
 
-// Loadfiles("aimodels/RWKV-4-Raven-1B5-v9-Eng99%-Other1%-20230411-ctx4096_quant4.bin", "rwkv.cpp/rwkv/20B_tokenizer.json", 8)
 
+
+// LoadFiles loads the model and tokenizer from the given files.
+// modelFile is the path to the model file.  This must be in ggml format.  See the aimodels/ directory for examples.
+// tokenFile is the path to the tokenizer file.  This must be in json format.  At the moment, only the 20B_tokenizer.json file from rwkv.cpp is supported.
 func LoadFiles(modelFile, tokenFile string, threads uint32) *RwkvState {
 	ctx, err := InitFromFile(modelFile, threads)
 
@@ -152,6 +155,7 @@ func LoadFiles(modelFile, tokenFile string, threads uint32) *RwkvState {
 }
 
 
+// ProcessInput processes the input string, updating the state of the model.
 func (r *RwkvState) ProcessInput(input string) error {
 	elems, logites, err := process_input(input, r.State, r.Tokenizer, r.Context)
 	if err != nil {
@@ -162,8 +166,9 @@ func (r *RwkvState) ProcessInput(input string) error {
 	return nil
 }
 
-func (r *RwkvState) PredictNextToken() string {
-	newtoken, err := sampleLogits(r.Logits, 0.2, 1, map[int]float32{})
+// Predict the next token from the current state.  State will not be changed by this function.
+func (r *RwkvState) PredictNextToken(temperature float32, top_p float32) string {
+	newtoken, err := sampleLogits(r.Logits, temperature, top_p, map[int]float32{})
 	if err != nil {
 		panic(err)
 	}
@@ -172,11 +177,14 @@ func (r *RwkvState) PredictNextToken() string {
 	return chars
 }
 
-func (r *RwkvState) GenerateResponse(maxTokens int, stopString string) string {
+// Generate a response from the current state.  The state will be changed by this function, in the process of generating the response.
+// maxTokens is the maximum number of tokens to generate
+// stopString is a string to stop at.  If the response contains this string, the response will be truncated at this point.
+func (r *RwkvState) GenerateResponse(maxTokens int, stopString string, temperature float32, top_p float32) string {
 	response_text := ""
 	for i := 0; i < maxTokens; i++ {
 
-		newtoken, err := sampleLogits(r.Logits, 0.2, 1, map[int]float32{})
+		newtoken, err := sampleLogits(r.Logits,temperature, top_p, map[int]float32{})
 		if err != nil {
 			panic(err)
 		}
@@ -197,4 +205,10 @@ func (r *RwkvState) GenerateResponse(maxTokens int, stopString string) string {
 	}
 	return response_text
 
+}
+
+// Reset the state of the model.  This is useful if you want to start a new conversation.  After resetting, you can't generate a response until you process some input.
+func (r *RwkvState) Reset() {
+	r.State = make([]float32, r.Context.GetStateBufferElementCount())
+	r.Logits = make([]float32, r.Context.GetLogitsBufferElementCount())
 }
