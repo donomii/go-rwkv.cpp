@@ -34,7 +34,7 @@ There is a build script, build.sh, which will build the c++ library and the go w
 
 ### Download models
 
-The download script will download the largest model, and convert it to the correct format.
+The download script will download some models, and convert them to the correct format.
 
 ```bash
     ./download_models.sh
