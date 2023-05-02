@@ -6,8 +6,10 @@ cmake --build . --config Release
 cp bin/Release/rwkv.dll ..
 cd ..
 
-which go
+cd examples
 go build -o ai .
+cd ..
+cp examples/ai .
 
 export DYLD_LIBRARY_PATH=./ 
 ./ai
