@@ -9,12 +9,12 @@ import (
 /*
 #include <stdlib.h>
 */
-//#cgo CFLAGS: -I./rwkv.cpp/ggml/include/ggml/
-//#cgo CPPFLAGS: -I./rwkv.cpp/ggml/include/ggml/
-//#cgo LDFLAGS: -L${SRCDIR}  -lrwkv
+//#cgo CFLAGS: -I./rwkv.cpp/ggml/include/ggml/ -I./rwkv.cpp -I./
+//#cgo CPPFLAGS: -I./rwkv.cpp/ggml/include/ggml/ -I./rwkv.cpp -I./
+//#cgo LDFLAGS: -L./  -lrwkv -lggml -lm -lstdc++
 // #include "includes.h"
+// #include "ggml.h"
 import "C"
-
 
 type Context struct {
 	cCtx *C.struct_rwkv_context
