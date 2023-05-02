@@ -112,7 +112,7 @@ func main() {
 		
 
 		Model.ProcessInput(text)
-		response_text :=Model.GenerateResponse(100, "\n")
+		response_text :=Model.GenerateResponse(100, "\n", 0.2, 1)
 		fmt.Print("\nAlice:"+response_text)
 
 		conv.BotText = append(conv.BotText, response_text)
