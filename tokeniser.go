@@ -1,4 +1,4 @@
-package main
+package rwkv
 
 import (
 	"fmt"

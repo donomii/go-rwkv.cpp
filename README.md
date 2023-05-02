@@ -1,2 +1,71 @@
 # go-rwkv.cpp
-A go wrapper around the rwkv.cpp library
+Run AI in go progrms, without any python, at all!
+
+gowrkv.go is a wrapper around [rwkv-cpp](https://github.com/saharNooby/rwkv.cpp), which is an adaption of ggml.cpp.
+
+## Features
+
+rkwv.cpp is generally faster, due to keeping the intermediate state of the model, so the entire prompt doesn't have to be reprocessed every time.  For more details, see [rwkv-cpp](https://github.com/saharNooby/rwkv.cpp).
+
+Also, the available models for rwkv.cpp are fully open-source, unlike llama.  You can use these models commercially, and you can modify them to your heart's content.
+
+Training may also be faster, I haven't had a chance to try that yet.
+
+## Installation
+
+Intallation is currently complex.  go-rkwv.cpp does not work with go get yet (patches very welcome).  You will need go, a c++ compiler(clang on Mac), and cmake.
+
+### Download
+
+You must clone this repo /recursively/, as it contains submodules.
+
+```bash
+    git clone --recursive https://github.com/donomii/go-rwkv.cpp
+```
+
+### Building
+
+There is a build script, build.sh, which will build the c++ library and the go wrapper. Please file bug reports if it doesn't work for you.
+
+```bash
+    ./build.sh
+```
+
+### Download models
+
+A small(!) model is included in the aimodels/ directory.  The download script will download the largest model, and convert it to the correct format.
+
+```bash
+    ./download_models.sh
+```
+
+### Install
+
+go-rwkv.cpp currently builds against the dynamic library librwkv.dylib.  This is not ideal, but it works for now.  You will need to copy this library to a location where go can find it.  On Mac, this is /usr/local/lib.
+
+```bash
+    cp librwkv.dylib /usr/local/lib
+```
+
+If you don't want to install it globally, you can set the DYLD_LIBRARY_PATH environment variable to the directory containing librwkv.dylib.
+
+## Use
+
+See the example/ directory for a full working chat program. The following is a minimal example.
+
+```go
+    package main
+
+    import (
+        "fmt"
+        "github.com/donomii/go-rwkv.cpp"
+    )
+
+    func main() {
+        model := LoadFiles("aimodels/RWKV-4-Raven-1B5-v9-Eng99%-Other1%-20230411-ctx4096_quant4.bin", "rwkv.cpp/rwkv/20B_tokenizer.json", 8)
+    model.ProcessInput("You are a chatbot that is very good at chatting.  blah blah blah")
+    response := model.Generate(100, "\n")
+    fmt.Println(response)
+
+    }
+```
