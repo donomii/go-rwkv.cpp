@@ -3,7 +3,7 @@
 cd rwkv.cpp
 cmake .
 cmake --build . --config Release
-cp bin/Release/rwkv.dll ..
+cp librwkv.dylib ..
 cd ..
 
 cd examples
