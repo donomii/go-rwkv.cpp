@@ -1,10 +1,13 @@
 #!/bin/sh
 
-wget -nc https://huggingface.co/BlinkDL/rwkv-4-raven/resolve/main/RWKV-4-Raven-1B5-v9-Eng99%25-Other1%25-20230411-ctx4096.pth
-python3 ../rwkv.cpp/rwkv//convert_pytorch_to_ggml.py RWKV-4-Raven-1B5-v9-Eng99%-Other1%-20230411-ctx4096.pth RWKV-4-Raven-1B5-v9-Eng99%-Other1%-20230411-ctx4096_float16.bin float16
-python3 ../rwkv.cpp/rwkv/quantize.py                 RWKV-4-Raven-1B5-v9-Eng99%-Other1%-20230411-ctx4096_float16.bin RWKV-4-Raven-1B5-v9-Eng99%-Other1%-20230411-ctx4096_quant4.bin Q4_2
+LARGE=https://huggingface.co/BlinkDL/rwkv-4-raven/resolve/main/RWKV-4-Raven-14B-v11x-Eng99%25-Other1%25-20230501-ctx8192
+SMALL=https://huggingface.co/BlinkDL/rwkv-4-raven/resolve/main/RWKV-4-Raven-1B5-v11-Eng99%25-Other1%25-20230425-ctx4096
 
-wget -nc https://huggingface.co/BlinkDL/rwkv-4-raven/blob/main/RWKV-4-Raven-14B-v9-Eng99%25-Other1%25-20230412-ctx8192.pth
-python3 ../rwkv.cpp/rwkv//convert_pytorch_to_ggml.py RWKV-4-Raven-14B-v9-Eng99%25-Other1%25-20230412-ctx8192.pth         RWKV-4-Raven-14B-v9-Eng99%25-Other1%25-20230412-ctx8192_float16.bin  float16
-python3 ../rwkv.cpp/rwkv/quantize.py                 RWKV-4-Raven-14B-v9-Eng99%25-Other1%25-20230412-ctx8192_float16.bin RWKV-4-Raven-14B-v9-Eng99%25-Other1%25-20230412-ctx8192_quant4.bin Q4_2
+wget -nc ${SMALL}.pth
+python3 ../rwkv.cpp/rwkv//convert_pytorch_to_ggml.py ${SMALL}.pth         ${SMALL}_float16.bin  float16
+python3 ../rwkv.cpp/rwkv/quantize.py                 ${SMALL}_float16.bin ${SMALL}_quant4.bin Q4_2
+
+wget -nc ${LARGE}.pth
+python3 ../rwkv.cpp/rwkv//convert_pytorch_to_ggml.py ${LARGE}.pth         ${LARGE}_float16.bin  float16
+python3 ../rwkv.cpp/rwkv/quantize.py                 ${LARGE}_float16.bin ${LARGE}_quant4.bin Q4_2
 
