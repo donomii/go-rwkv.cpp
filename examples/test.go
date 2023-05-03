@@ -9,7 +9,8 @@ import (
 	"os"
 	"strings"
 	"text/template"
-	rwkv ".."
+
+	rwkv "github.com/donomii/go-rwkv.cpp"
 )
 
 // A structure to hold the conversation state
