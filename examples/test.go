@@ -106,15 +106,16 @@ func main() {
 			break
 		}
 
-
 		conv.UserText = append(conv.UserText, text)
 		text = "\n\nBob: " + text + "\n\nAlice:"
 
-		
-
 		Model.ProcessInput(text)
-		response_text :=Model.GenerateResponse(100, "\n", 0.2, 1)
-		fmt.Print("\nAlice:"+response_text)
+		fmt.Print("\nAlice:")
+
+		response_text := Model.GenerateResponse(100, "\n", 0.2, 1, func(s string) bool {
+			fmt.Print(s)
+			return true
+		})
 
 		conv.BotText = append(conv.BotText, response_text)
 
