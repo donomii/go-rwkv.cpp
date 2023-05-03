@@ -31,7 +31,13 @@ You must clone this repo /recursively/, as it contains submodules.
 There is a build script, build.sh, which will build the c++ library and the go wrapper. Please file bug reports if it doesn't work for you.
 
 ```bash
-    ./build.sh
+    ./build-mac.sh
+```
+
+There is now an alternate build, which builds statically thanks to a makefile provided by @mudler.   
+
+```bash
+    make example/ai
 ```
 
 ### Download models
