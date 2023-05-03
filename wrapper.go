@@ -2,8 +2,8 @@ package rwkv
 
 import (
 	"errors"
-	"unsafe"
 	"strings"
+	"unsafe"
 )
 
 /*
@@ -93,8 +93,6 @@ func GetSystemInfoString() string {
 	return C.GoString(C.rwkv_get_system_info_string())
 }
 
-
-
 func process_input(input string, elem_buff []float32, tk *Tokenizer, ctx *Context) ([]float32, []float32, error) {
 	tokens, err := tk.Encode(input)
 	if err != nil {
@@ -104,7 +102,6 @@ func process_input(input string, elem_buff []float32, tk *Tokenizer, ctx *Contex
 	logit_buff := make([]float32, ctx.GetLogitsBufferElementCount())
 
 	for _, t := range tokens {
-		
 
 		elem_buff, logit_buff, _, err = ctx.Eval(int32(t.ID), elem_buff)
 		if err != nil {
@@ -123,8 +120,6 @@ type RwkvState struct {
 	Logits    []float32
 	Tokenizer *Tokenizer
 }
-
-
 
 // LoadFiles loads the model and tokenizer from the given files.
 // modelFile is the path to the model file.  This must be in ggml format.  See the aimodels/ directory for examples.
@@ -154,7 +149,6 @@ func LoadFiles(modelFile, tokenFile string, threads uint32) *RwkvState {
 	}
 }
 
-
 // ProcessInput processes the input string, updating the state of the model.
 func (r *RwkvState) ProcessInput(input string) error {
 	elems, logites, err := process_input(input, r.State, r.Tokenizer, r.Context)
@@ -180,11 +174,11 @@ func (r *RwkvState) PredictNextToken(temperature float32, top_p float32) string 
 // Generate a response from the current state.  The state will be changed by this function, in the process of generating the response.
 // maxTokens is the maximum number of tokens to generate
 // stopString is a string to stop at.  If the response contains this string, the response will be truncated at this point.
-func (r *RwkvState) GenerateResponse(maxTokens int, stopString string, temperature float32, top_p float32) string {
+func (r *RwkvState) GenerateResponse(maxTokens int, stopString string, temperature float32, top_p float32, tokenCallback func(s string) bool) string {
 	response_text := ""
 	for i := 0; i < maxTokens; i++ {
 
-		newtoken, err := sampleLogits(r.Logits,temperature, top_p, map[int]float32{})
+		newtoken, err := sampleLogits(r.Logits, temperature, top_p, map[int]float32{})
 		if err != nil {
 			panic(err)
 		}
@@ -196,6 +190,10 @@ func (r *RwkvState) GenerateResponse(maxTokens int, stopString string, temperatu
 
 		chars := DeTokenise(*r.Tokenizer, []int{newtoken})
 		response_text += chars
+
+		if tokenCallback != nil && !tokenCallback(chars) {
+			break
+		}
 
 		if strings.Contains(response_text, stopString) {
 			//Split on stopstring, and return the first part
