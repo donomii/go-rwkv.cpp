@@ -50,7 +50,7 @@ func (ctx *Context) Eval(token int32, stateIn []float32) ([]float32, []float32, 
 		cLogitsOut = (*C.float)(unsafe.Pointer(&logitsOut[0]))
 	}
 
-	success := C.rwkv_eval(ctx.cCtx, C.int32_t(token), cStateIn, cStateOut, cLogitsOut)
+	success := C.rwkv_eval(ctx.cCtx, C.uint32_t(token), cStateIn, cStateOut, cLogitsOut)
 	if success == false {
 		return nil, nil, false, errors.New("failed to evaluate rwkv")
 	}
