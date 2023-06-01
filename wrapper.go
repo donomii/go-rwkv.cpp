@@ -11,7 +11,7 @@ import (
 */
 //#cgo CFLAGS: -I./rwkv.cpp/ggml/include/ggml/ -I./rwkv.cpp -I./
 //#cgo CPPFLAGS: -I./rwkv.cpp/ggml/include/ggml/ -I./rwkv.cpp -I./
-//#cgo LDFLAGS: -L./  -lrwkv -lggml -lm -lstdc++
+//#cgo LDFLAGS: -L./  -lrwkv -lm -lstdc++
 // #include "includes.h"
 // #include "ggml.h"
 import "C"
