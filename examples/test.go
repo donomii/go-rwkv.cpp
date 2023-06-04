@@ -22,7 +22,7 @@ type ConversationState struct {
 }
 
 func main() {
-	Model := rwkv.LoadFiles("aimodels/small.bin", "rwkv.cpp/rwkv/20B_tokenizer.json", 8)
+	Model := rwkv.LoadFiles("aimodels/large.bin", "rwkv.cpp/rwkv/20B_tokenizer.json", 8)
 	preambleTemplate := `The following is a verbose detailed conversation between {{ .User }} and a woman, {{ .Bot }}. {{ .Bot }} is intelligent, friendly and likeable. {{ .Bot }} is likely to agree with {{ .User }}.
 
 {{ .User }}{{ .Separator }} Hello {{ .Bot }}, how are you doing?
@@ -112,7 +112,7 @@ func main() {
 		Model.ProcessInput(text)
 		fmt.Print("\nAlice:")
 
-		response_text := Model.GenerateResponse(100, "\n", 0.2, 1, func(s string) bool {
+		response_text := Model.GenerateResponse(100, "\n", 0.1, 0, func(s string) bool {
 			fmt.Print(s)
 			return true
 		})
