@@ -170,7 +170,7 @@ func DeTokenise(tk Tokenizer, tokens []int) string {
 		for key, value := range tk.Model.Vocab {
 			detokenMap[value] = key
 		}
-		for key, value := range tk.AddedTokens {
+		for _, value := range tk.AddedTokens {
 			detokenMap[value.Id] = value.Content
 		}
 	}
