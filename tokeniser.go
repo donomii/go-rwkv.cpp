@@ -175,6 +175,8 @@ func DeTokenise(tk Tokenizer, tokens []int) string {
 	for _, token := range tokens {
 		if val, ok := detokenMap[token]; ok {
 			output += strings.ReplaceAll(strings.Replace(val, "\u0120", " ", -1), "Ċ", "\n")
+		} else {
+			output += fmt.Sprintf("<%x>", token)
 		}
 	}
 	return output
