@@ -181,10 +181,10 @@ func DeTokenise(tk Tokenizer, tokens []int) string {
 		}
 		if val, ok := detokenMap[token]; ok {
 			if val == "Ġ" {
-				lastChar := output[len(output)-1]
-				if lastChar != '\'' && lastChar != '\n' {
+				//lastChar := output[len(output)-1]
+				//if lastChar != '\'' && lastChar != '\n' {
 					output += " "
-				}
+				//}
 			}
 			if val =="Ċ" {
 				output += "\n"
