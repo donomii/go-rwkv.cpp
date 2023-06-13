@@ -183,9 +183,10 @@ func DeTokenise(tk Tokenizer, tokens []int) string {
 				if lastChar != '\'' && lastChar != '\n' {
 					output += " "
 				}
-			}
-			if val =="Ċ" {
+			} else if  val =="Ċ" {
 				output += "\n"
+			} else {
+				output += val
 			}
 
 		} else {
