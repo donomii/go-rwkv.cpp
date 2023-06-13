@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
-	
+
 	"os"
 	"strings"
 	"unicode"
@@ -180,15 +180,12 @@ func DeTokenise(tk Tokenizer, tokens []int) string {
 			//log.Printf("Token: %v, Val: %v", token, val)
 			if val[0] == "Ġ"[0] {
 				if len(output) > 0 {
-					lastChar := output[len(output)-1]
-					if lastChar != '\'' && lastChar != '\n' {
-						output += " " + val[1:]
-					} else {
-						output += val[1:]
-					}
+
+					output += " " + val[1:]
 				} else {
 					output += val[1:]
 				}
+
 			} else if val == "Ċ" {
 				output += "\n"
 			} else {
@@ -196,7 +193,7 @@ func DeTokenise(tk Tokenizer, tokens []int) string {
 			}
 
 		} else {
-			output += fmt.Sprintf("<%x>", token)
+			output += fmt.Sprintf("%x", token)
 		}
 	}
 	return output
