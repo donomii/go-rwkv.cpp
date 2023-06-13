@@ -7,6 +7,7 @@ import (
 	"encoding/json"
 	"unicode"
 	"os"
+	"log"
 )
 
 type Token struct {
@@ -178,6 +179,7 @@ func DeTokenise(tk Tokenizer, tokens []int) string {
 	for _, token := range tokens {
 		
 		if val, ok := detokenMap[token]; ok {
+			log.Printf("Token: %v, Val: %v", token, val)
 			if val == "Ġ" {
 				
 					output += " "
