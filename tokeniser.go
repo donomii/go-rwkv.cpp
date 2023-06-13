@@ -1,13 +1,13 @@
 package rwkv
 
 import (
-	"fmt"
-	"strings"
-	"io/ioutil"
 	"encoding/json"
-	"unicode"
-	"os"
+	"fmt"
+	"io/ioutil"
 	"log"
+	"os"
+	"strings"
+	"unicode"
 )
 
 type Token struct {
@@ -16,7 +16,6 @@ type Token struct {
 	Start int
 	End   int
 }
-
 
 type Tokenizer struct {
 	AddedTokens   []AddedToken  `json:"added_tokens"`
@@ -86,7 +85,6 @@ func LoadTokeniser(file string) (Tokenizer, error) {
 func (t Tokenizer) Encode(text string) ([]Token, error) {
 	return Tokenize(text, t)
 }
-
 
 func Tokenize(input string, pipelineConfig Tokenizer) ([]Token, error) {
 
@@ -177,19 +175,19 @@ func DeTokenise(tk Tokenizer, tokens []int) string {
 	}
 	var output string
 	for _, token := range tokens {
-		
+
 		if val, ok := detokenMap[token]; ok {
-			log.Printf("Token: %v, Val: %v", token, val)
+			//log.Printf("Token: %v, Val: %v", token, val)
 			if val[0] == "Ġ"[0] {
-if len(output) > 0 {
-				lastChar := output[len(output)-1]
-				if lastChar != '\'' && lastChar != '\n' {
-					output += " "+val[1:]
+				if len(output) > 0 {
+					lastChar := output[len(output)-1]
+					if lastChar != '\'' && lastChar != '\n' {
+						output += " " + val[1:]
+					}
+				} else {
+					output += val[1:]
 				}
-			}else {
-				output += val[1:]
-			}
-			} else if  val =="Ċ" {
+			} else if val == "Ċ" {
 				output += "\n"
 			} else {
 				output += val
