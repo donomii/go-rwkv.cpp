@@ -180,10 +180,11 @@ func DeTokenise(tk Tokenizer, tokens []int) string {
 		
 		if val, ok := detokenMap[token]; ok {
 			log.Printf("Token: %v, Val: %v", token, val)
-			if val == "Ġ" {
-				
+			if val[0] == "Ġ"[0] {
+				lastChar := output[len(output)-1]
+				if lastChar != '\'' && lastChar != '\n' {
 					output += " "
-				
+				}
 			} else if  val =="Ċ" {
 				output += "\n"
 			} else {
