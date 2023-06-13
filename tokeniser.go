@@ -176,15 +176,13 @@ func DeTokenise(tk Tokenizer, tokens []int) string {
 	}
 	var output string
 	for _, token := range tokens {
-		if token == 0 {
-			return output
-		}
+		
 		if val, ok := detokenMap[token]; ok {
 			if val == "Ġ" {
-				//lastChar := output[len(output)-1]
-				//if lastChar != '\'' && lastChar != '\n' {
+				lastChar := output[len(output)-1]
+				if lastChar != '\'' && lastChar != '\n' {
 					output += " "
-				//}
+				}
 			}
 			if val =="Ċ" {
 				output += "\n"
