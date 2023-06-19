@@ -59,11 +59,11 @@ func (ctx *Context) Eval(token int32, stateIn []float32) ([]float32, []float32, 
 }
 
 func (ctx *Context) GetStateBufferElementCount() uint32 {
-	return uint32(C.rwkv_get_state_buffer_element_count(ctx.cCtx))
+	return uint32(C.rwkv_get_state_len(ctx.cCtx))
 }
 
 func (ctx *Context) GetLogitsBufferElementCount() uint32 {
-	return uint32(C.rwkv_get_logits_buffer_element_count(ctx.cCtx))
+	return uint32(C.rwkv_get_logits_len(ctx.cCtx))
 }
 
 func (ctx *Context) Free() {
