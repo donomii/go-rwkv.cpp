@@ -12,7 +12,7 @@ import (
 //#cgo CFLAGS: -I./rwkv.cpp/ggml/include/ggml/ -I./rwkv.cpp -I./
 //#cgo CPPFLAGS: -I./rwkv.cpp/ggml/include/ggml/ -I./rwkv.cpp -I./
 //#cgo LDFLAGS: -L./  -lrwkv -lm -lstdc++
-// #cgo darwin LDFLAGS: -framework Accelerate -lcblas
+//#cgo darwin LDFLAGS: -framework Accelerate -lcblas
 // #include "includes.h"
 // #include "ggml.h"
 import "C"
