@@ -1,0 +1,5 @@
+aimodels/large.bin
+aimodels/small.bin
+examples/examples
+.vscode/
+examples2/examples2
