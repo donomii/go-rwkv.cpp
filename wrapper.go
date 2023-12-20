@@ -2,6 +2,7 @@ package rwkv
 
 import (
 	"errors"
+	"log"
 	"strings"
 	"unsafe"
 )
@@ -9,11 +10,11 @@ import (
 /*
 #include <stdlib.h>
 */
-//#cgo CFLAGS: -I./rwkv.cpp/ggml/include/ggml/ -I./rwkv.cpp -I./
-//#cgo CPPFLAGS: -I./rwkv.cpp/ggml/include/ggml/ -I./rwkv.cpp -I./
-//#cgo LDFLAGS: -L./  -lrwkv -lm -lstdc++
+//#cgo CFLAGS: -I${SRCDIR}/rwkv.cpp/ggml/include/ggml/ -I${SRCDIR}/rwkv.cpp -I${SRCDIR}
+//#cgo CPPFLAGS: -I${SRCDIR}/rwkv.cpp/ggml/include/ggml/ -I${SRCDIR}/rwkv.cpp -I${SRCDIR}
+//#cgo LDFLAGS: -L${SRCDIR}/rwkv.cpp/build  -lrwkv -lm -lstdc++
 //#cgo darwin LDFLAGS: -framework Accelerate -lcblas
-// #include "includes.h"
+// #include "rwkv.h"
 // #include "ggml.h"
 import "C"
 
@@ -127,6 +128,10 @@ type RwkvState struct {
 // tokenFile is the path to the tokenizer file.  This must be in json format.  At the moment, only the 20B_tokenizer.json file from rwkv.cpp is supported.
 func LoadFiles(modelFile, tokenFile string, threads uint32) *RwkvState {
 	ctx, err := InitFromFile(modelFile, threads)
+	if err != nil {
+		log.Fatalf("InitFromFile %v failed\n", modelFile)
+		return nil
+	}
 
 	elem_size := ctx.GetStateBufferElementCount()
 	logit_size := ctx.GetLogitsBufferElementCount()
@@ -134,11 +139,13 @@ func LoadFiles(modelFile, tokenFile string, threads uint32) *RwkvState {
 	elem_buff := make([]float32, elem_size)
 	logit_buff := make([]float32, logit_size)
 	if err != nil {
+		log.Fatalf("buff error\n")
 		return nil
 	}
 
 	tk, err := LoadTokeniser(tokenFile)
 	if err != nil {
+		log.Fatalf("LoadTokeniser %v failed\n", tokenFile)
 		return nil
 	}
 

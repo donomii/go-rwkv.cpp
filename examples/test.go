@@ -5,7 +5,6 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
 	"os"
 	"strings"
 	"text/template"
@@ -22,7 +21,7 @@ type ConversationState struct {
 }
 
 func main() {
-	Model := rwkv.LoadFiles("aimodels/large.bin", "rwkv.cpp/rwkv/20B_tokenizer.json", 8)
+	Model := rwkv.LoadFiles("../aimodels/large.bin", "../rwkv.cpp/python/20B_tokenizer.json", 8)
 	preambleTemplate := `The following is a verbose detailed conversation between {{ .User }} and a woman, {{ .Bot }}. {{ .Bot }} is intelligent, friendly and likeable. {{ .Bot }} is likely to agree with {{ .User }}.
 
 {{ .User }}{{ .Separator }} Hello {{ .Bot }}, how are you doing?
@@ -62,7 +61,7 @@ func main() {
 	//if it doesn't exist, create it as an empty data struct
 	if _, err := os.Stat("conversation.json"); err == nil {
 		fmt.Println("Loading conversation")
-		data, err := ioutil.ReadFile("conversation.json")
+		data, err := os.ReadFile("conversation.json")
 		if err != nil {
 			panic(err)
 		}
@@ -77,7 +76,7 @@ func main() {
 			input := "\n\nBob: " + conv.UserText[i] + "\n\nAlice: " + conv.BotText[i]
 			fmt.Print(input)
 			Model.ProcessInput(input)
-		
+
 		}
 	} else {
 		fmt.Println("Creating conversation")
@@ -88,7 +87,7 @@ func main() {
 		if err != nil {
 			panic(err)
 		}
-		ioutil.WriteFile("conversation.json", data, 0644)
+		os.WriteFile("conversation.json", data, 0644)
 	}
 
 	// Read lines from stdin, and submit them to the model, until the user types exit
@@ -124,7 +123,7 @@ func main() {
 		if err != nil {
 			panic(err)
 		}
-		ioutil.WriteFile("conversation.json", data, 0644)
+		os.WriteFile("conversation.json", data, 0644)
 	}
 
 }
