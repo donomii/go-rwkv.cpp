@@ -1,4 +1,4 @@
-# AI wit RWKV
+# AI with RWKV
 
 # [![Go Reference](https://pkg.go.dev/badge/github.com/donomii/go-rwkv.cpp.svg)](https://pkg.go.dev/github.com/donomii/go-rwkv.cpp) go-rwkv.cpp
 
