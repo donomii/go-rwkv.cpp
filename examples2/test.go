@@ -18,7 +18,7 @@ type ConversationState struct {
 }
 
 func main() {
-	Model := rwkv.LoadFiles("../aimodels/large.bin", "../rwkv.cpp/rwkv/20B_tokenizer.json", 8)
+	Model := rwkv.LoadFiles("../aimodels/small.bin", "../rwkv.cpp/python/20B_tokenizer.json", 8)
 	// Read lines from stdin, and submit them to the model, until the user types exit
 
 	fmt.Println("Enter text to send to the model, or type exit to quit")
