@@ -1,16 +1,19 @@
 #!/bin/sh
  
- cd rwkv.cpp
+cd rwkv.cpp
 cmake .
 cmake --build . --config Release
 cp librwkv.dylib ..
- cd ..
+cd ..
  
- cd examples
- go build -o ai .
- cd ..
- cp examples/ai .
+cd examples
+go build -o ai .
+cd ..
+cp examples/ai .
+
+cd aimodels
+sh downloadconvert.sh  
+cd ..
 
 export DYLD_LIBRARY_PATH=./ 
 ./ai
-cd aimodels

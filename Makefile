@@ -1,3 +1,5 @@
+all: build examples/ai example
+
 rwkv.cpp/bin/test_tiny_rwkv:
 	cd rwkv.cpp && cmake .  && cmake --build .
 	cd rwkv.cpp && cmake . -DRWKV_BUILD_SHARED_LIBRARY=OFF && cmake --build .
@@ -17,3 +19,7 @@ clean:
 
 examples/ai: librwkv.a
 	C_INCLUDE_PATH=$(shell pwd) LIBRARY_PATH=$(shell pwd) go build -o examples/ai ./examples
+
+example: librwkv.a
+	C_INCLUDE_PATH=$(shell pwd) LIBRARY_PATH=$(shell pwd) go build -o example ./examples
+
