@@ -1,10 +1,8 @@
-# AI without python (1)
+# AI with RWKV
 
 # [![Go Reference](https://pkg.go.dev/badge/github.com/donomii/go-rwkv.cpp.svg)](https://pkg.go.dev/github.com/donomii/go-rwkv.cpp) go-rwkv.cpp
 
 gowrkv.go is a wrapper around [rwkv-cpp](https://github.com/saharNooby/rwkv.cpp), which is an adaption of ggml.cpp.
-
-(1) Python required for training and converting the models into the correct format.
 
 ## Features
 
@@ -45,7 +43,8 @@ There is now an alternate build, which builds statically thanks to a makefile pr
 The download script will download some models, and convert them to the correct format.
 
 ```bash
-    ./download_models.sh
+    cd aimodels
+    sh downloadconvert.sh
 ```
 
 ### Install
@@ -54,6 +53,7 @@ go-rwkv.cpp currently builds against the dynamic library librwkv.dylib.  This is
 
 ```bash
     cp librwkv.dylib /usr/local/lib
+    export DYLD_LIBRARY_PATH=/Users/donomii/git/go-rwkv.cpp/rwkv.cpp/
 ```
 
 If you don't want to install it globally, you can set the DYLD_LIBRARY_PATH environment variable to the directory containing librwkv.dylib.
